@@ -9,8 +9,10 @@ services:
     ports:
       - "3000:3000"
     environment:
-      - GF_INSTALL_PLUGINS=grafana-clock-panel,yesoreyeram-boomtheme-panel,savantly-heatmap-panel,ryantxu-ajax-panel,grafana-worldmap-panel,ae3e-plotly-panel
-      - GF_LOG_CONSOLE_LEVEL=warn
+      - GF_INSTALL_PLUGINS=${GRAFANA_INSTALL_PLUGINS}
+      - GF_LOG_CONSOLE_LEVEL=${GRAFANA_LOG_CONSOLE_LEVEL}
+      - GF_SECURITY_ADMIN_USER=${GRAFANA_ADMIN_USERNAME}
+      - GF_SECURITY_ADMIN_PASSWORD=${GRAFANA_ADMIN_PASSWORD}
     volumes:
       # /var/lib/grafana/data:/var/lib/grafana
       - ${GRAFANA_SOURCE_DATA_VOLUME}:${GRAFANA_TARGET_DATA_VOLUME}
@@ -39,7 +41,7 @@ services:
     env_file:
       - 'env.influxdb'
     environment:
-      - INFLUXDB_ADMIN_ENABLED=${INFLUXDB_ADMIN_ENABLED} #true
+      - INFLUXDB_ADMIN_ENABLED=${INFLUXDB_ADMIN_ENABLED}
       - INFLUXDB_ADMIN_USER=${INFLUXDB_ADMIN_USER}
       - INFLUXDB_USER=${INFLUXDB_USER}
       - INFLUXDB_ADMIN_PASSWORD=${INFLUXDB_ADMIN_PASSWORD}
@@ -50,7 +52,7 @@ services:
       - INFLUXDB_DATA_COMPACT_FULL_WRITE_COLD_DURATION=48h
       - INFLUXDB_COORDINATOR_WRITE_TIMEOUT=60s
       - INFLUXDB_COORDINATOR_QUERY_TIMEOUT=30s
-      - INFLUXDB_RETENTION_ENABLED=${INFLUXDB_RETENTION_ENABLED} #false
+      - INFLUXDB_RETENTION_ENABLED=${INFLUXDB_RETENTION_ENABLED}
       - INFLUXDB_RETENTION_CHECK_INTERVAL=30000m
       - INFLUXDB_SHARD_PRECREATION_CHECK_INTERVAL=24h
     networks:    
