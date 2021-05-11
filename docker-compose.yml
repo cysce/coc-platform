@@ -8,11 +8,6 @@ services:
     restart: always
     ports:
       - "3000:3000"
-    environment:
-      - GF_INSTALL_PLUGINS=${GRAFANA_INSTALL_PLUGINS}
-      - GF_LOG_CONSOLE_LEVEL=${GRAFANA_LOG_CONSOLE_LEVEL}
-      - GF_SECURITY_ADMIN_USER=${GRAFANA_ADMIN_USERNAME}
-      - GF_SECURITY_ADMIN_PASSWORD=${GRAFANA_ADMIN_PASSWORD}
     volumes:
       # /var/lib/grafana/data:/var/lib/grafana
       - ${GRAFANA_SOURCE_DATA_VOLUME}:${GRAFANA_TARGET_DATA_VOLUME}
@@ -20,8 +15,8 @@ services:
       - 'env.grafana'
     depends_on:
       - influxdb
-    networks:    
-      - internal
+    #networks:
+    #  - internal
     privileged: true
     
   influxdb:
@@ -32,29 +27,11 @@ services:
     ports:
       - "8086:8086"
     volumes:
-      # /var/lib/influxdb/data:/var/lib/influxdb
       - ${INFLUXDB_SOURCE_DATA_VOLUME}:${INFLUXDB_TARGET_DATA_VOLUME}
-      # /var/lib/influxdb/data:/var/lib/influxdb2
       - ${INFLUXDB2_SOURCE_DATA_VOLUME}:${INFLUXDB2_TARGET_DATA_VOLUME}
-      # /var/lib/influxdb/config:/etc/influxdb2
       - ${INFLUXDB2_SOURCE_CONFIG_VOLUME}:${INFLUXDB2_TARGET_CONFIG_VOLUME}
     env_file:
       - 'env.influxdb'
-    environment:
-      - INFLUXDB_ADMIN_ENABLED=${INFLUXDB_ADMIN_ENABLED}
-      - INFLUXDB_ADMIN_USER=${INFLUXDB_ADMIN_USER}
-      - INFLUXDB_USER=${INFLUXDB_USER}
-      - INFLUXDB_ADMIN_PASSWORD=${INFLUXDB_ADMIN_PASSWORD}
-      - INFLUXDB_USER_PASSWORD=${INFLUXDB_USER_PASSWORD}
-      - INFLUXDB_DATA_CACHE_MAX_MEMORY_SIZE=200m
-      - INFLUXDB_DATA_CACHE_SNAPSHOT_MEMORY_SIZE=10m
-      - INFLUXDB_DATA_WAL_FSYNC_DELAY=100ms
-      - INFLUXDB_DATA_COMPACT_FULL_WRITE_COLD_DURATION=48h
-      - INFLUXDB_COORDINATOR_WRITE_TIMEOUT=60s
-      - INFLUXDB_COORDINATOR_QUERY_TIMEOUT=30s
-      - INFLUXDB_RETENTION_ENABLED=${INFLUXDB_RETENTION_ENABLED}
-      - INFLUXDB_RETENTION_CHECK_INTERVAL=30000m
-      - INFLUXDB_SHARD_PRECREATION_CHECK_INTERVAL=24h
-    networks:    
-      - internal
+    #networks:    
+    #  - internal
     privileged: true
