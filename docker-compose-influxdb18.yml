@@ -2,19 +2,14 @@ version: '3.8'
 
 services:
   influxdb:
-    image: influxdb:${INFLUXDB2_TAG}
+    image: influxdb:${INFLUXDB_TAG}
     container_name: influxdb
     user: 'root'
     restart: always
     ports:
       - "8086:8086"
     volumes:
-      #- ${INFLUXDB_SOURCE_DATA_VOLUME}:${INFLUXDB_TARGET_DATA_VOLUME}
-      #- ${INFLUXDB2_SOURCE_DATA_VOLUME}:${INFLUXDB2_TARGET_DATA_VOLUME}
-      #- ${INFLUXDB2_SOURCE_CONFIG_VOLUME}:${INFLUXDB2_TARGET_CONFIG_VOLUME}
       - ./influxdb18-data:${INFLUXDB_TARGET_DATA_VOLUME}
-      - ./influxdb20-data:${INFLUXDB2_TARGET_DATA_VOLUME}
-      - ./influxdb20-config:${INFLUXDB2_TARGET_CONFIG_VOLUME}
     env_file:
       - 'env.influxdb'
     networks:    
@@ -29,8 +24,6 @@ services:
     ports:
       - "3000:3000"
     volumes:
-      # /var/lib/grafana/data:/var/lib/grafana
-      #- ${GRAFANA_SOURCE_DATA_VOLUME}:${GRAFANA_TARGET_DATA_VOLUME}
       - ./grafana-data:${GRAFANA_TARGET_DATA_VOLUME}
     env_file:
       - 'env.grafana'
@@ -52,6 +45,21 @@ services:
       - internal
     privileged: true
 
+  kapacitor:
+    image: kapacitor:${KAPACITOR_TAG}
+    container_name: kapacitor
+    user: "root"
+    restart: always
+    ports: 
+      - 9092:9092
+    volumes:
+      - ./kapacitor-data:${KAPACITOR_TARGET_DATA_VOLUME}
+    env_file: 
+      - 'env.kapacitor'
+    networks: 
+      - internal
+    privileged: true
+
 networks:
   internal:
 
@@ -60,10 +68,4 @@ volumes:
     external: true
 
   influxdb18-data:
-    external: true
-
-  influxdb20-data:
-    external: true
-
-  influxdb20-config:
     external: true
