@@ -46,10 +46,12 @@ services:
     user: "root"
     restart: always
     volumes:
-      - "./telegraf.conf:/etc/telegraf/telegraf.conf:ro"
+      - "./telegraf/telegraf.conf:/etc/telegraf/telegraf.conf:ro"
       - "/var/run/docker.sock:/var/run/docker.sock"
     networks:
       - internal
+    depends_on: 
+      - influxdb
     privileged: true
 
 networks:
