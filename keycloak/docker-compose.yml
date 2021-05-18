@@ -1,0 +1,19 @@
+version: '3.8'
+
+services:
+    keycloak-service:
+        build: 
+            context: keycloak
+            dockerfile: Dockerfile
+        ports: 
+            - "8080:8080"
+        env_file:
+            - env.keycloak
+        networks:
+              - internal
+        depends_on: 
+            - postgres-keycloak-service
+        privileged: true
+
+networks:
+    internal:

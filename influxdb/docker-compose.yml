@@ -1,0 +1,31 @@
+version: '3.8'
+
+services:
+    influxdb-service:
+        image: influxdb:${INFLUXDB2_TAG}
+        container_name: influxdb
+        user: 'root'
+        restart: always
+        ports:
+            - "8086:8086"
+        volumes:
+            # /var/lib/influxdb2
+            - ./influxdb20-data:${INFLUXDB2_TARGET_DATA_VOLUME}
+            # /etc/influxdb2
+            - ./influxdb20-config:${INFLUXDB2_TARGET_CONFIG_VOLUME}
+        env_file:
+            - env.influxdb
+        networks:    
+            - datanetworkcoc
+        privileged: true
+
+networks:
+    datanetworkcoc:
+        #external: true
+
+volumes:
+    influxdb20-data:
+        external: true
+
+    influxdb20-config:
+        external: true

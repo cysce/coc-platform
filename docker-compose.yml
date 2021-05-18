@@ -9,14 +9,10 @@ services:
     ports:
       - "8086:8086"
     volumes:
-      #- ${INFLUXDB_SOURCE_DATA_VOLUME}:${INFLUXDB_TARGET_DATA_VOLUME}
-      #- ${INFLUXDB2_SOURCE_DATA_VOLUME}:${INFLUXDB2_TARGET_DATA_VOLUME}
-      #- ${INFLUXDB2_SOURCE_CONFIG_VOLUME}:${INFLUXDB2_TARGET_CONFIG_VOLUME}
-      - ./influxdb18-data:${INFLUXDB_TARGET_DATA_VOLUME}
       - ./influxdb20-data:${INFLUXDB2_TARGET_DATA_VOLUME}
       - ./influxdb20-config:${INFLUXDB2_TARGET_CONFIG_VOLUME}
     env_file:
-      - 'env.influxdb'
+      - './influxdb/env.influxdb'
     networks:    
       - internal
     privileged: true
@@ -33,7 +29,7 @@ services:
       #- ${GRAFANA_SOURCE_DATA_VOLUME}:${GRAFANA_TARGET_DATA_VOLUME}
       - ./grafana-data:${GRAFANA_TARGET_DATA_VOLUME}
     env_file:
-      - 'env.grafana'
+      - './grafana/env.grafana'
     depends_on:
       - influxdb
     networks:

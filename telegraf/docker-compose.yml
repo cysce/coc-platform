@@ -1,0 +1,21 @@
+version: '3.8'
+
+services:
+    telegraf-service:
+        image: telegraf:${TELEGRAF_TAG}
+        container_name: telegraf
+        user: "root"
+        restart: always
+        volumes:
+            - "telegraf.conf:/etc/telegraf/telegraf.conf:ro"
+            #- "/var/run/docker.sock:/var/run/docker.sock"
+        networks:
+            - internal
+        depends_on: 
+            - influxdb
+        links: 
+            - influxdb
+        privileged: true
+
+networks:
+    internal:

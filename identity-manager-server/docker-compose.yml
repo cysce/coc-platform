@@ -1,0 +1,36 @@
+version: '3.8'
+
+services:
+    keycloak-service:
+        build: 
+            context: keycloak
+            dockerfile: Dockerfile
+        ports: 
+            - "8080:8080"
+        env_file:
+            - env.keycloak
+        networks:
+              - internal
+        depends_on: 
+            - postgres-keycloak-service
+        privileged: true
+
+    postgres-keycloak-service:
+        image: postgres:${POSTGRES_TAG}
+        container_name: postgres-keycloak-service
+        restart: always
+            volumes:
+                - ./postgres-data:${POSTGRES_TARGET_DATA_VOLUME}
+            env_file:
+                - env.postgres
+            networks:    
+                - datanetworkcoc
+            privileged: true
+    
+    networks:
+        datanetworkcoc:
+            external: true
+    
+    volumes:
+        postgres-data:
+            external: true

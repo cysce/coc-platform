@@ -1,0 +1,19 @@
+version: '3.8'
+
+services:
+    nginx:
+        image: nginx:${NGINX_TAG}
+        container_name: nginx
+        restart: always
+        ports: 
+            - 80:80
+        volumes:
+            - ./nginx/nginx.conf:/etc/nginx/nginx.conf:ro
+        env_file:
+            - './nginx/env.nginx'
+        networks:    
+            - internal
+        privileged: true
+
+networks:
+    internal:

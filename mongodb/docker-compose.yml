@@ -1,0 +1,15 @@
+version: '3.8'
+
+services:
+    mongo:
+      image: mongo:${MONGO_TAG}
+      container_name: mongo
+      restart: always
+      ports: 
+          - "27017:27017"
+      networks:    
+          - internal
+      privileged: true
+
+networks:
+    internal:

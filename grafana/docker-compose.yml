@@ -1,0 +1,27 @@
+version: '3.8'
+
+services: 
+    grafana-service:
+        image: grafana/grafana:${GRAFANA_TAG}
+        container_name: grafana
+        user: "root"
+        restart: always
+        ports: 
+            - "3000:3000"
+        volumes:
+            # /var/lib/grafana
+            - ./grafana-data:${GRAFANA_TARGET_DATA_VOLUME}
+        env_file:
+            - env.grafana
+        depends_on:
+            - influxdb
+        networks:
+            - datanetworkcoc
+        privileged: true
+
+networks:
+    datanetworkcoc:
+
+volumes:
+    grafana-data:
+        external:

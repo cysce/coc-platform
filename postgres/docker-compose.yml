@@ -1,0 +1,21 @@
+version: '3.8'
+
+services:
+    postgres-keycloak-service:
+        image: postgres:${POSTGRES_TAG}
+        container_name: postgres-keycloak-service
+        restart: always
+        volumes:
+            - ./postgres-data:${POSTGRES_TARGET_DATA_VOLUME}
+        env_file:
+            - env.postgres
+        networks:    
+            - datanetworkcoc
+        privileged: true
+
+networks:
+    datanetworkcoc:
+
+volumes:
+    postgres-data:
+        #external: true
